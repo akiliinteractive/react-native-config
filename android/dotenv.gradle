@@ -16,6 +16,10 @@ def getCurrentFlavor() {
 def readDotEnv = {
     def envFile = ".env"
 
+    if (project.hasProperty("defaultEnvFile")) {
+        envFile = project.defaultEnvFile
+    }
+
     if (System.env['ENVFILE']) {
         envFile = System.env['ENVFILE'];
     } else if (project.hasProperty("envConfigFiles")) {
@@ -36,7 +40,7 @@ def readDotEnv = {
         }
     } catch (FileNotFoundException ex) {
         println("**************************")
-        println("*** Missing .env file ****")
+        println("*** Missing $envFile file ****")
         println("**************************")
     }
     project.ext.set("env", env)
